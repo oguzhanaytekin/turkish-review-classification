@@ -1,0 +1,53 @@
+{
+  "dosya": "TRSAv1.csv",
+  "kodlama": "utf-8-sig",
+  "metin_kolonu": "review",
+  "etiket_kolonu": "score",
+  "toplam_satir": 150000,
+  "bos_metin": 0,
+  "bos_etiket": 0,
+  "normalize_sonrasi_bos": 60,
+  "sinif_dagilimi": {
+    "Negative": 50000,
+    "Neutral": 50000,
+    "Positive": 50000
+  },
+  "birebir_tekrar": {
+    "satir": 150000,
+    "tekil_metin": 140980,
+    "fazlalik_satir": 9020,
+    "tekrar_eden_metin": 2736,
+    "tekrar_grubundaki_satir": 11756
+  },
+  "normalize_tekrar": {
+    "satir": 149940,
+    "tekil_metin": 137681,
+    "fazlalik_satir": 12259,
+    "tekrar_eden_metin": 3112,
+    "tekrar_grubundaki_satir": 15371
+  },
+  "celiskili_metin": 1049,
+  "celiskili_satir": 9593,
+  "senaryolar": {
+    "ham": {
+      "Negative": 49975,
+      "Neutral": 49967,
+      "Positive": 49998
+    },
+    "A: tekilleştir, ilkini tut": {
+      "Negative": 45461,
+      "Neutral": 44566,
+      "Positive": 47654
+    },
+    "B: çelişkileri at + tekilleştir": {
+      "Negative": 45181,
+      "Neutral": 44070,
+      "Positive": 47381
+    },
+    "C: çoğunluk etiketi": {
+      "Negative": 45334,
+      "Neutral": 44382,
+      "Positive": 47556
+    }
+  }
+}

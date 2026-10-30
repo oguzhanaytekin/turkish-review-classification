@@ -1,0 +1,21 @@
+# Sanal ortam ve Python önbellekleri
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Ham veri repoya girmez (16 MB, betik kendisi indirir)
+data/raw/*
+!data/raw/.gitkeep
+*.part
+
+# Gizli anahtarlar (ileride LLM API anahtarı burada olacak)
+.env
+
+# Editör / işletim sistemi
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
