@@ -1,0 +1,91 @@
+{
+  "secilen": {
+    "on_isleme": "tam",
+    "temsil": "kelime"
+  },
+  "ablation": [
+    {
+      "on_isleme": "ham",
+      "temsil": "kelime",
+      "val_macro_f1": 0.8067,
+      "val_accuracy": 0.8082,
+      "ozellik_sayisi": 145291,
+      "sure_sn": 16
+    },
+    {
+      "on_isleme": "ham",
+      "temsil": "karakter",
+      "val_macro_f1": 0.8049,
+      "val_accuracy": 0.8066,
+      "ozellik_sayisi": 97447,
+      "sure_sn": 50
+    },
+    {
+      "on_isleme": "hafif",
+      "temsil": "kelime",
+      "val_macro_f1": 0.8104,
+      "val_accuracy": 0.812,
+      "ozellik_sayisi": 138225,
+      "sure_sn": 14
+    },
+    {
+      "on_isleme": "hafif",
+      "temsil": "karakter",
+      "val_macro_f1": 0.8044,
+      "val_accuracy": 0.8063,
+      "ozellik_sayisi": 84428,
+      "sure_sn": 54
+    },
+    {
+      "on_isleme": "tam",
+      "temsil": "kelime",
+      "val_macro_f1": 0.8106,
+      "val_accuracy": 0.8121,
+      "ozellik_sayisi": 133362,
+      "sure_sn": 15
+    },
+    {
+      "on_isleme": "tam",
+      "temsil": "karakter",
+      "val_macro_f1": 0.8023,
+      "val_accuracy": 0.8038,
+      "ozellik_sayisi": 66879,
+      "sure_sn": 51
+    }
+  ],
+  "test": {
+    "macro_f1": 0.8032,
+    "accuracy": 0.805,
+    "negative_recall": 0.8263,
+    "negative_precision": 0.8586,
+    "ece": 0.0325,
+    "log_loss": 0.4915,
+    "llm_alt_kume_macro_f1": 0.796
+  },
+  "zor": {
+    "ce_model": 1.1039,
+    "ce_alt_sinir": 0.6402,
+    "ce_esit": 1.0986,
+    "ce_prior": 1.1062,
+    "cogunluk_uyumu": 0.7422
+  },
+  "ascii_yazim": {
+    "uzun_yorum_sayisi": 95587,
+    "uzun_ve_turkce_karaktersiz": 1532,
+    "uzun_ve_turkce_karaktersiz_oran": 0.016027284044901502,
+    "ascii_kelime_iceren": 1104,
+    "ascii_kelime_iceren_oran": 0.010100178399890216,
+    "en_sik_ascii_kelimeler": {
+      "gercekten": 435,
+      "yumusak": 167,
+      "basarili": 165,
+      "kullanisli": 154,
+      "boyle": 94,
+      "tesekkur": 77,
+      "tatli": 37,
+      "begendik": 9,
+      "begendim": 2,
+      "begenmedim": 1
+    }
+  }
+}
