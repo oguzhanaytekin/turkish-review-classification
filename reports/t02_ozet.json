@@ -1,0 +1,19 @@
+{
+  "ham_satir": 150000,
+  "normalize_bos": 60,
+  "ana_veri": 136632,
+  "zor_ornekler": 1049,
+  "zor_esitlik": 409,
+  "bolme": {
+    "train": 109305,
+    "val": 13663,
+    "test": 13664
+  },
+  "llm_alt_kume": 1500,
+  "siniflar": [
+    "Negative",
+    "Neutral",
+    "Positive"
+  ],
+  "seed": 42
+}

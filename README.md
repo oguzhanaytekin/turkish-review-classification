@@ -1,6 +1,7 @@
 # Türkçe Ürün Yorumu Sınıflandırma: Klasik ML, BERTurk ve LLM
 
-> Durum: geliştirme aşamasında (T-01: veri keşfi)
+> Durum: geliştirme aşamasında. Tamamlanan: T-01 veri keşfi, T-02 temizlik ve bölme.
+> Kod değişikliklerinin geçmişi: `docs/KOD_GUNLUGU.md`
 
 ## Problem
 Bir e-ticaret şirketi her gün binlerce Türkçe ürün yorumu alıyor. Olumsuz yorumları
@@ -38,8 +39,9 @@ pip install -r requirements.txt
 
 ## Çalıştırma
 ```powershell
-python scripts\01_veri_kesfi.py   # veri keşfi, rapor: reports\t01_rapor.md
-pytest                            # metin yardımcılarının testleri
+python scripts\01_veri_kesfi.py      # veri keşfi, rapor: reports\t01_rapor.md
+python scripts\02_temizlik_bolme.py  # temizlik + bölme, çıktı: data\processed\, rapor: reports\t02_rapor.md
+pytest                               # testler
 ```
 
 ## Proje yapısı

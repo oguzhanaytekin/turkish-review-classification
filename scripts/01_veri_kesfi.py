@@ -26,25 +26,18 @@ bu çıktılara bakıp birlikte karar vereceğiz.
 from __future__ import annotations
 
 import argparse
-import io
 import json
 import sys
-import urllib.request
 from pathlib import Path
 
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from src.data_io import DEFAULT_CSV, REPORTS, ensure_data, read_csv_robust  # noqa: E402
+from src.report import Report, pct, short, use_utf8_stdout  # noqa: E402
 from src.text_utils import normalize_text  # noqa: E402
 
-DATA_URL = (
-    "https://huggingface.co/datasets/maydogan/"
-    "Turkish_SentimentAnalysis_TRSAv1/resolve/main/TRSAv1.csv"
-)
-DATA_PAGE = "https://huggingface.co/datasets/maydogan/Turkish_SentimentAnalysis_TRSAv1/tree/main"
-DEFAULT_CSV = ROOT / "data" / "raw" / "TRSAv1.csv"
-REPORTS = ROOT / "reports"
 SEED = 42  # rastgele örneklerin her çalıştırmada aynı çıkması için
 
 pd.set_option("display.width", 200)
@@ -52,96 +45,16 @@ pd.set_option("display.max_colwidth", 90)
 
 
 # --------------------------------------------------------------------------
-# Yardımcılar
+# Yardımcılar (Report, short, pct artık src/report.py içinde)
 # --------------------------------------------------------------------------
-class Report:
-    """Ekrana yazar ve aynı içeriği markdown dosyası için biriktirir."""
-
-    def __init__(self) -> None:
-        self.lines: list[str] = []
-
-    def h(self, title: str) -> None:
-        print(f"\n{'=' * 70}\n{title}\n{'=' * 70}")
-        self.lines.append(f"\n## {title}\n")
-
-    def p(self, text: str = "") -> None:
-        print(text)
-        self.lines.append(text)
-
-    def table(self, obj) -> None:
-        text = obj.to_string() if hasattr(obj, "to_string") else str(obj)
-        print(text)
-        self.lines.append("```\n" + text + "\n```")
-
-    def save(self, path: Path) -> None:
-        path.write_text("\n".join(self.lines) + "\n", encoding="utf-8")
-
-
-def short(text, n: int = 90) -> str:
-    text = str(text).replace("\n", " ").replace("\r", " ")
-    return text if len(text) <= n else text[: n - 1] + "…"
-
-
-def pct(part: float, whole: float) -> str:
-    return f"%{100 * part / whole:.2f}" if whole else "-"
-
-
 def label_breakdown(row: pd.Series) -> str:
     """Bir satırdaki sınıf sayılarını 'Negative:12, Notr:3' biçiminde yazar."""
     return ", ".join(f"{k}:{int(v)}" for k, v in row.items() if v > 0)
 
 
 # --------------------------------------------------------------------------
-# Veriyi getir ve oku
+# Kolon tespiti (veriyi indirme/okuma src/data_io.py içinde)
 # --------------------------------------------------------------------------
-def ensure_data(path: Path, allow_download: bool) -> None:
-    if path.exists():
-        return
-    if not allow_download:
-        sys.exit(f"Veri bulunamadı: {path}")
-    path.parent.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_name(path.name + ".part")
-    print(f"Veri indiriliyor (~16 MB):\n  {DATA_URL}")
-    try:
-        urllib.request.urlretrieve(DATA_URL, tmp)
-    except Exception as exc:  # ağ hatası, proxy vb.
-        tmp.unlink(missing_ok=True)
-        sys.exit(
-            f"\nİndirme başarısız: {exc}\n"
-            f"Elle indir: {DATA_PAGE}\n"
-            f"Dosyayı şuraya koy: {path}"
-        )
-    tmp.replace(path)
-    print("İndirme tamam.\n")
-
-
-def read_csv_robust(path: Path) -> tuple[pd.DataFrame, str, str]:
-    """Kodlamayı ve ayırıcıyı deneyerek CSV'yi okur."""
-    raw = path.read_bytes()
-    head = raw[:200].lstrip().lower()
-    if head.startswith((b"<!doctype", b"<html", b"version https://git-lfs")):
-        sys.exit(f"{path.name} gerçek bir CSV değil (HTML ya da LFS işaretçisi). Silip elle indir: {DATA_PAGE}")
-
-    text, encoding = None, None
-    for enc in ("utf-8-sig", "cp1254"):  # utf-8-sig, BOM'lu ve BOM'suz UTF-8'i okur
-        try:
-            text, encoding = raw.decode(enc), enc
-            break
-        except UnicodeDecodeError:
-            continue
-    if text is None:
-        text, encoding = raw.decode("utf-8", errors="replace"), "utf-8 (bozuk baytlar değiştirildi)"
-
-    for sep in (",", ";", "\t"):
-        try:
-            df = pd.read_csv(io.StringIO(text), sep=sep)
-        except pd.errors.ParserError:
-            continue
-        if df.shape[1] >= 2:
-            return df, encoding, sep
-    sys.exit("CSV okunamadı: virgül, noktalı virgül ve sekme ayırıcılarının hiçbiri işe yaramadı.")
-
-
 def detect_columns(df: pd.DataFrame, text_col: str | None, label_col: str | None) -> tuple[str, str]:
     """Metin kolonu: en uzun ortalama metne sahip yazı kolonu.
     Etiket kolonu: 2–10 farklı değeri olan kolon."""
@@ -190,11 +103,7 @@ def main() -> None:
     parser.add_argument("--no-download", action="store_true")
     args = parser.parse_args()
 
-    try:  # Windows konsolunda emoji yüzünden çökmemek için
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    except (AttributeError, ValueError):
-        pass
-
+    use_utf8_stdout()
     REPORTS.mkdir(exist_ok=True)
     ensure_data(args.csv, allow_download=not args.no_download)
     raw_df, encoding, sep = read_csv_robust(args.csv)

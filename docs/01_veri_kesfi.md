@@ -57,6 +57,17 @@
   setinde saklanacak; modeller bu sette ayrıca değerlendirilecek.
 - Tekrarlar train/test bölmesinden önce atılıyor; aynı yorum iki tarafta olursa test
   skoru şişer (data leakage).
+- **T-02 güncellemesi:** Zor örnekler ana veriden tamamen çıkarılıp ayrı bir set yapıldı ve
+  yumuşak etiketleri değerlendirmede kullanılacak. Ayrıntı: docs/02_temizlik_bolme.md.
+
+## Kararlar ve alternatifler
+| Karar | Seçtiğimiz | Yerine | Alternatif ne zaman daha iyi olurdu? |
+|---|---|---|---|
+| Veri seti | TRSAv1: dengeli 3 sınıf, yayınlanmış referans skor | Turkish Product Reviews (235 bin, 2 sınıf, %94 olumlu) | Lisans önemliyse (CC-BY-SA, ticari kullanım net) ya da dengesiz sınıflandırma çalışılıyorsa |
+| Tekrar tespiti | Normalleştirerek: küçük harf + noktalama silme | Birebir eşleşme / bulanık eşleşme | Birebir: veri zaten temizse. Bulanık: çok yazım hatası veya şablon metin varsa; ama farklı anlamlı metinleri birleştirme riski taşır |
+| Türkçe küçük harf | Kendi fonksiyonumuz (2 harf eşleme + test) | PyICU gibi bir kütüphane | Birden çok dille çalışılıyorsa ya da karmaşık harf kuralları varsa |
+| Çelişkili etiketler | C: çoğunluk etiketi | A: ilkini tut / B: çelişkileri at | A: çelişki çok azsa. B: etiket saflığı her şeyden önemliyse; ama zor örnekler ayrı ölçülmeli |
+| Sızıntıyı önleme | Bölmeden önce tekilleştirme | Tekrarları tutup aynı metni hep aynı parçaya koymak (group split) | Tekrar sıklığı bilgi taşıyorsa (ör. modelin "idare eder"in çok sık geçtiğini bilmesi isteniyorsa) |
 
 ## LLM karşılaştırması için çıkarım
 - Zero-shot LLM, "güzel ürün" gibi hafif övgülere büyük ihtimalle Positive diyecek ve
