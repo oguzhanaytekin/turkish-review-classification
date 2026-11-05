@@ -1,27 +1,11 @@
-# Öğrenme Günlüğü
-
-Her oturumdan sonra 3–5 satır: ne yaptım, nerede zorlandım, hangi kararı neden aldım.
-Mülakatta projeyi anlatırken bu dosya hafıza görevi görecek.
-##
-Ama bir ayrıntıyı düzeltmem lazım: "İ".lower() sonucunda “i” ve “ı” çıkmıyor. Çıkan şey “i” ve görünmez bir “birleşik nokta” işareti (U+0307). Yani:
-
-python
-"İ".lower()   # "i̇"  ->  "i" + U+0307 (iki karakter)
-"I".lower()   # "i"  ->  Türkçede "ı" olmalıydı
-“Python’un lower() fonksiyonu Türkçeyi bilmiyor. ‘I’yı ‘i’ye, ‘İ’yi de ‘i’ artı görünmez bir nokta işaretine çeviriyor. Bu, aynı yorumların farklı metin sayılmasına yol açıyordu. Küçültmeden önce İ ve I’yı elle eşleyen bir fonksiyon yazdım ve bunu testlerle doğruladım.”
-###
----
-
-## 2026-10-30 — Proje başlangıcı
-- Veri seti: TRSAv1. Neden: üç sınıf dengeli, yayınlanmış bir referans skor var
-  (mBERT ile ~%82 doğruluk), nötr sınıf LLM'ler için ilginç bir zorluk.
-- Kapsama alınanlar: train/test bölmesinden önce tekrar temizliği (sızıntıyı önlemek için)
-  ve proje sonunda 100–200 hatanın elle incelenmesi.
-- Çalışma yöntemi: kodu Claude yazıyor; kritik kararları ben veriyorum, çıktıları ben yorumluyorum.
-  Haftada 2 × 30 dk yapay zekâsız SQL/pandas pratiği ayrıca devam ediyor.
-
-## Şablon
-### YYYY-AA-GG — T-0X
-- Ne yaptım:
-- Nerede zorlandım / ne öğrendim:
-- Aldığım karar ve nedeni:
+### 2026-10-31 — T-01: Veri keşfi
+- Ne yaptım: TRSAv1'i inceledim (150 bin yorum, 3 sınıf × 50 bin). Tekrarları ve
+  çelişkili etiketleri ölçtüm: %8,2 tekrar, 1.049 metin farklı sınıflarla etiketlenmiş.
+- Ne öğrendim: Python'un lower() fonksiyonu Türkçeyi bilmiyor ("I"→"i", "İ"→"i"+görünmez nokta).
+  Bu yüzden aynı yorumlar farklı metin sayılıyordu; kendi fonksiyonumu yazdım ve testlerle doğruladım.
+  Tekrarları train/test bölmesinden önce atmanın sebebi overfitting değil, data leakage:
+  aynı yorum iki tarafta olursa test skoru şişer ve overfitting'i göremem.
+  Makaleden etiketlerin elle verildiğini buldum; "güzel ürün" gibi hafif övgülerin
+  sistematik olarak Neutral etiketlenmesi bir etiketleme kuralına işaret ediyor.
+- Aldığım karar: Temizlikte C senaryosu (çoğunluk etiketi). Elle etiketlenmiş veride çoğunluk oyu
+  ortak karara en yakın etiketi verir ve zor örnekleri atmaz. Çelişkili metinler ayrıca saklanacak.
