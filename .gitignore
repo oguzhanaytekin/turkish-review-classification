@@ -10,6 +10,7 @@ __pycache__/
 data/raw/*
 !data/raw/.gitkeep
 data/processed/
+models/
 *.part
 
 # Gizli anahtarlar (ileride LLM API anahtarı burada olacak)

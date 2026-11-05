@@ -73,3 +73,38 @@ ne zaman ve neden değişti?" sorusunun cevabı.
   `llm_alt_kume` kolonu bunu işaretliyor.
 - `check_no_leakage` betik içinde **her çalıştırmada** kontrol ediliyor. Sızıntı varsa
   betik dosya yazmadan durur.
+
+---
+
+## 2026-11-05 — T-03: Baseline (TF-IDF + lojistik regresyon)
+
+### Eklenen dosyalar
+| Dosya | Ne işe yarıyor |
+|---|---|
+| `src/preprocess.py` | `preprocess(texts, mod)`: ham / hafif / tam ön işleme. `light_normalize`: noktalamayı ve emojiyi koruyan küçük harf. `ascii_writing_stats`: "basarili" gibi Türkçe karaktersiz yazımın yaygınlığını ölçer |
+| `src/baseline.py` | `build_pipeline(temsil)`: TF-IDF (kelime veya karakter n-gram) + lojistik regresyon. `top_features`: her sınıfta en etkili özellikler |
+| `src/metrics.py` | `expected_calibration_error` (ECE), `soft_cross_entropy` ve `entropy` (zor örnekler için), `classification_summary` (macro-F1, accuracy, sınıf bazında P/R/F1) |
+| `scripts/03_baseline.py` | ASCII ölçümü → 6'lı ablation (val) → seçilen modelin test değerlendirmesi → zor örnekler → özellik yorumu |
+| `tests/test_preprocess_metrics.py` | 6 test: ön işleme modları, ASCII ölçümü, ECE, cross-entropy alt sınırı, `lowercase=False`, emoji/noktalama token'ları |
+| `docs/03_baseline.md` | T-03 kararları ve alternatifler |
+
+### Değişen dosyalar
+| Dosya | Değişiklik |
+|---|---|
+| `.gitignore` | **+ `models/`**: Eğitilmiş model dosyası (`baseline.joblib`) repoya girmiyor, betik yeniden üretiyor |
+| `README.md` | 03 çalıştırma komutu eklendi |
+
+### Önemli uygulama ayrıntıları
+- **`lowercase=False`:** sklearn'ün `TfidfVectorizer` sınıfı varsayılan olarak Python'un `lower()`
+  fonksiyonunu kullanır ve T-01'deki İ/I hatasını geri getirir. Bu yüzden kapatıldı, küçük
+  harf işlemini `preprocess` yapıyor. Bir testle güvence altına alındı.
+- **Token deseni:** sklearn'ün varsayılan deseni (`\b\w\w+\b`) noktalamayı, emojiyi ve tek
+  harfli kelimeleri atıyor. "hafif" ön işlemenin korumaya çalıştığı "!!!" ve "👍"
+  boşa gitmesin diye desen `kelime | tek sembol` olarak değiştirildi.
+- **Karakter n-gram: `char_wb`, 2–5 harf.** `_wb` = n-gram'lar kelime sınırını aşmaz.
+- **Val setinde seçim, test setinde tek ölçüm.** Ablation döngüsü test setine hiç dokunmuyor.
+- Fark 0,5 puandan küçükse rapor "pratikte eşit" uyarısı veriyor (val belirsizliği ±0,6 puan).
+- Test ve zor örnek tahminleri olasılıklarıyla birlikte `reports/` altına kaydediliyor;
+  ileride hata analizinde kullanılacak.
+- İşlenmiş CSV'ler `keep_default_na=False` ile okunuyor: Metni "NA" ya da "null" olan
+  bir yorum boş değer sanılmasın diye.
