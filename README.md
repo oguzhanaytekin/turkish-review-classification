@@ -1,7 +1,7 @@
 # Türkçe Ürün Yorumu Sınıflandırma: Klasik ML, BERTurk ve LLM
 
 > Durum: geliştirme aşamasında. Tamamlanan: T-01 veri keşfi, T-02 temizlik ve bölme, T-03 baseline. Devam eden: T-04 BERTurk.
-> Kod değişikliklerinin geçmişi: `docs/KOD_GUNLUGU.md`
+> Kod değişikliklerinin geçmişi: `docs/KOD_GUNLUGU.md` · Terimler sözlüğü: `docs/SOZLUK.md`
 
 ## Problem
 Bir e-ticaret şirketi her gün binlerce Türkçe ürün yorumu alıyor. Olumsuz yorumları

@@ -156,3 +156,11 @@ ne zaman ve neden değişti?" sorusunun cevabı.
 - **Yerel test:** GPU ve `transformers` olmadan, sahte bir model iskeletiyle (stub) betiğin raporlama ve hesaplama
   kısmı uçtan uca denendi. Gerçek eğitim kısmının ilk testi Colab'daki smoke koşusu.
 
+---
+
+## 2026-11-06 — Sözlük
+| Dosya | Değişiklik |
+|---|---|
+| `docs/SOZLUK.md` | **Yeni.** Projede geçen ~45 terim: İngilizce terim, Türkçe açıklama ve bu projedeki karşılığı. Yeni terim çıktıkça güncellenecek |
+| `README.md` | Sözlüğe bağlantı eklendi |
+
