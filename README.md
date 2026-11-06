@@ -1,6 +1,6 @@
 # Türkçe Ürün Yorumu Sınıflandırma: Klasik ML, BERTurk ve LLM
 
-> Durum: geliştirme aşamasında. Tamamlanan: T-01 veri keşfi, T-02 temizlik ve bölme. Devam eden: T-03 baseline.
+> Durum: geliştirme aşamasında. Tamamlanan: T-01 veri keşfi, T-02 temizlik ve bölme, T-03 baseline. Devam eden: T-04 BERTurk.
 > Kod değişikliklerinin geçmişi: `docs/KOD_GUNLUGU.md`
 
 ## Problem
@@ -42,6 +42,7 @@ pip install -r requirements.txt
 python scripts\01_veri_kesfi.py      # veri keşfi, rapor: reports\t01_rapor.md
 python scripts\02_temizlik_bolme.py  # temizlik + bölme, çıktı: data\processed\, rapor: reports\t02_rapor.md
 python scripts\03_baseline.py        # baseline ablation + test, rapor: reports\t03_rapor.md
+# BERTurk (GPU gerekir): notebooks/04_berturk_colab.ipynb dosyasını Colab'da aç
 pytest                               # testler
 ```
 
@@ -52,4 +53,5 @@ scripts/      adım adım çalıştırılan betikler
 docs/         her adımın bulguları ve kararları
 reports/      betiklerin ürettiği çıktılar
 tests/        testler
+notebooks/    GPU gerektiren adımlar için Colab notebook'ları
 ```

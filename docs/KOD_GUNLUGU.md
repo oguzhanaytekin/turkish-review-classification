@@ -108,3 +108,51 @@ ne zaman ve neden değişti?" sorusunun cevabı.
   ileride hata analizinde kullanılacak.
 - İşlenmiş CSV'ler `keep_default_na=False` ile okunuyor: Metni "NA" ya da "null" olan
   bir yorum boş değer sanılmasın diye.
+
+---
+
+## 2026-11-05 — GitHub'a yayın hazırlığı
+| Dosya | Değişiklik |
+|---|---|
+| `.gitignore` | **+ `reports/*.csv`**: Test tahminleri gibi tablolar binlerce ham yorum içeriyor. Veri setinin açık bir lisansı olmadığı için bu tablolar public repoda yeniden dağıtılmıyor; betikler hepsini yeniden üretiyor. Özet raporlar (`.md`, `.json`) repoda kalıyor |
+
+---
+
+## 2026-11-06 — T-04 hazırlık
+| Dosya | Değişiklik |
+|---|---|
+| `docs/04_berturk.md` | **Yeni.** T-04 kararları (BERTurk cased, Colab, 1 seed, kodun GitHub'dan çekilmesi) kod yazılmadan önce kayda geçti |
+
+---
+
+## 2026-11-06 — T-04: BERTurk fine-tune
+
+### Eklenen dosyalar
+| Dosya | Ne işe yarıyor |
+|---|---|
+| `src/calibration.py` | `softmax`, `nll` (log loss), `fit_temperature`: val setinde sıcaklık öğrenme. Torch gerektirmez, yerelde test edilebilir |
+| `scripts/04_berturk.py` | Bölme kontrolü → BERTurk eğitimi (Trainer, Drive'a checkpoint, kaldığı yerden devam) → sıcaklık → test, zor örnekler, hız → baseline ile karşılaştırma. `--smoke` ile küçük deneme |
+| `notebooks/04_berturk_colab.ipynb` | Colab adımları: GPU kontrolü, Drive, repoyu indirme, paketler, veri hazırlama, smoke testi, tam eğitim, rapor |
+| `requirements-gpu.txt` | `transformers`, `accelerate` (yalnızca GPU ortamı için; yerel kurulumu ağırlaştırmasın diye ayrı dosya) |
+| `tests/test_calibration.py` | 3 test: softmax taşmıyor, sıcaklık bilinen aşırı güveni (T=3) buluyor, sıcaklık tahmini değiştirmiyor |
+
+### Değişen dosyalar
+| Dosya | Değişiklik |
+|---|---|
+| `src/data_io.py` | **+ `load_processed`** (03'ten taşındı; artık 03 ve 04 birlikte kullanıyor) |
+| `scripts/03_baseline.py` | `load_split` **çıkarıldı**, yerine `load_processed` import ediliyor. Davranış aynı |
+| `docs/04_berturk.md` | Uygulama ayrıntıları ve 5 yeni alternatif satırı |
+| `README.md` | 04 komutu ve `notebooks/` klasörü eklendi |
+
+### Önemli uygulama ayrıntıları
+- **Dinamik dolgu:** Metinler bir kez token'a çevriliyor; dolgu (padding) her batch'te en uzun yoruma göre
+  yapılıyor (`DataCollatorWithPadding`). Yorumlar kısa olduğu için sabit 128'e doldurmaktan çok daha hızlı.
+- **Kopmaya dayanıklılık:** Checkpoint'ler Drive'a yazılıyor (`save_total_limit=2`). Aynı komut tekrar
+  çalışınca `get_last_checkpoint` ile devam ediyor. Eğitim bitince ara checkpoint'ler siliniyor
+  (her biri ~1,3 GB), yalnızca `best/` kalıyor.
+- **Bölme kontrolü:** `reports/t02_ozet.json` ile satır sayıları karşılaştırılıyor; ayrıca test kimliklerinin
+  özeti (`test_kimlik_ozeti`) rapora yazılıyor. LLM aşamasında aynı test setini kullandığımızı bununla doğrulayacağız.
+- **Kalibrasyon sonrası olasılıklar** CSV'lere yazılıyor; macro-F1 için ham argmax kullanılıyor (ikisi aynı sınıfı verir).
+- **Yerel test:** GPU ve `transformers` olmadan, sahte bir model iskeletiyle (stub) betiğin raporlama ve hesaplama
+  kısmı uçtan uca denendi. Gerçek eğitim kısmının ilk testi Colab'daki smoke koşusu.
+

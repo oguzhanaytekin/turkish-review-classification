@@ -35,7 +35,7 @@ from sklearn.metrics import log_loss
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from src.baseline import ANALYZERS, build_pipeline, top_features  # noqa: E402
-from src.data_io import PROCESSED, REPORTS  # noqa: E402
+from src.data_io import REPORTS, load_processed  # noqa: E402
 from src.metrics import (  # noqa: E402
     classification_summary,
     entropy,
@@ -49,18 +49,10 @@ MODELS = ROOT / "models"
 pd.set_option("display.width", 200)
 
 
-def load_split(name: str) -> pd.DataFrame:
-    path = PROCESSED / f"{name}.csv"
-    if not path.exists():
-        sys.exit(f"{path} yok. Önce çalıştır: python scripts/02_temizlik_bolme.py")
-    # keep_default_na=False: "NA", "null", "None" yazan yorumlar boş değer sanılmasın
-    return pd.read_csv(path, keep_default_na=False, na_values=[""])
-
-
 def main() -> None:
     use_utf8_stdout()
     MODELS.mkdir(exist_ok=True)
-    train, val, test, hard = (load_split(n) for n in ("train", "val", "test", "zor_ornekler"))
+    train, val, test, hard = (load_processed(n) for n in ("train", "val", "test", "zor_ornekler"))
     labels = sorted(train["label"].unique())
 
     r = Report()

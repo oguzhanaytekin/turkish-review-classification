@@ -78,6 +78,18 @@ def read_csv_robust(path: Path) -> tuple[pd.DataFrame, str, str]:
     sys.exit("CSV okunamadı: virgül, noktalı virgül ve sekme ayırıcılarının hiçbiri işe yaramadı.")
 
 
+def load_processed(name: str) -> pd.DataFrame:
+    """02 betiğinin ürettiği parçalardan birini okur: train, val, test veya zor_ornekler.
+
+    T-03'te scripts/03_baseline.py içindeydi; T-04 de kullandığı için buraya taşındı.
+    keep_default_na=False: metni "NA", "null", "None" olan yorumlar boş değer sanılmasın.
+    """
+    path = PROCESSED / f"{name}.csv"
+    if not path.exists():
+        sys.exit(f"{path} yok. Önce çalıştır: python scripts/02_temizlik_bolme.py")
+    return pd.read_csv(path, keep_default_na=False, na_values=[""])
+
+
 def load_trsa(path: Path = DEFAULT_CSV, allow_download: bool = True) -> pd.DataFrame:
     """TRSAv1'i standart kolon adlarıyla döndürür: id, text, label.
 
