@@ -1,0 +1,32 @@
+{
+  "model": "dbmdz/bert-base-turkish-cased",
+  "seed": 42,
+  "epochs": 3,
+  "lr": 2e-05,
+  "batch": 32,
+  "max_len": 128,
+  "smoke": false,
+  "gpu": "Tesla T4",
+  "test_kimlik_ozeti": "ec122295137a",
+  "egitim_dk": 21.8,
+  "ms_per_yorum": 1.374,
+  "sicaklik": 1.4256,
+  "test": {
+    "macro_f1": 0.8416,
+    "accuracy": 0.8436,
+    "negative_recall": 0.861,
+    "negative_precision": 0.8891,
+    "ece_ham": 0.0565,
+    "ece_kalibre": 0.0109,
+    "log_loss_ham": 0.4275,
+    "log_loss_kalibre": 0.3987,
+    "llm_alt_kume_macro_f1": 0.8311
+  },
+  "zor": {
+    "ce_ham": 0.9901,
+    "ce_kalibre": 0.8795,
+    "ce_alt_sinir": 0.6402,
+    "ce_esit": 1.0986,
+    "cogunluk_uyumu": 0.7969
+  }
+}
