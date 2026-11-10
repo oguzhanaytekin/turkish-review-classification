@@ -1,0 +1,124 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "k": 5,
+  "batch": 20,
+  "sicaklik": 1.0,
+  "zero": {
+    "cevaplanan (test)": "1500/1500",
+    "macro-F1": 0.772612697543655,
+    "accuracy": 0.7853333333333333,
+    "Negative recall": 0.896,
+    "Negative precision": 0.7724137931034483,
+    "ECE (örnekleme)": 0.03784615384615366,
+    "ECE (sözel)": 0.08465999999999999,
+    "zor CE (örnekleme)": 1.3336688023870809,
+    "zor CE (sözel)": 1.3433845217726996,
+    "çoğunlukla uyum (zor)": 0.6046875,
+    "ort. güven test (örnekleme)": 0.8231794871794872,
+    "ort. güven zor (örnekleme)": 0.8251814915303953,
+    "ort. güven test (sözel)": 0.7916653333333333,
+    "ort. güven zor (sözel)": 0.8272430886558627
+  },
+  "few": {
+    "cevaplanan (test)": "1500/1500",
+    "macro-F1": 0.7800989110915953,
+    "accuracy": 0.7906666666666666,
+    "Negative recall": 0.902,
+    "Negative precision": 0.7816291161178509,
+    "ECE (örnekleme)": 0.03528205128205122,
+    "ECE (sözel)": 0.07483066666666666,
+    "zor CE (örnekleme)": 1.3261381191249468,
+    "zor CE (sözel)": 1.260808134221814,
+    "çoğunlukla uyum (zor)": 0.61875,
+    "ort. güven test (örnekleme)": 0.8242051282051283,
+    "ort. güven zor (örnekleme)": 0.8278213683361444,
+    "ort. güven test (sözel)": 0.7807640000000001,
+    "ort. güven zor (sözel)": 0.8042059103908485
+  },
+  "kural": {
+    "cevaplanan (test)": "1500/1500",
+    "macro-F1": 0.7722984808747638,
+    "accuracy": 0.77,
+    "Negative recall": 0.862,
+    "Negative precision": 0.8071161048689138,
+    "ECE (örnekleme)": 0.04579487179487164,
+    "ECE (sözel)": 0.0572346666666667,
+    "zor CE (örnekleme)": 1.1849921318899725,
+    "zor CE (sözel)": 1.0508731332402685,
+    "çoğunlukla uyum (zor)": 0.65625,
+    "ort. güven test (örnekleme)": 0.8157948717948718,
+    "ort. güven zor (örnekleme)": 0.7992227029405296,
+    "ort. güven test (sözel)": 0.7607333333333333,
+    "ort. güven zor (sözel)": 0.7359218303145852
+  },
+  "istekler": {
+    "istek": 129,
+    "hata": 19,
+    "kota_bekleme": 0,
+    "girdi_token": 75544,
+    "cikti_token": 166421,
+    "sure_sn": 722.7
+  },
+  "few_shot_ornekleri": [
+    {
+      "text": "Ürünün tek kötü tarafı kokusunun güzel olmaması, sanıyorum onun için ucuz",
+      "label": "Negative"
+    },
+    {
+      "text": "ürün haddinden fazla kücuk we performnsi çok dusuk begnmedm iade",
+      "label": "Negative"
+    },
+    {
+      "text": "ürün görseldeki gibi değil",
+      "label": "Negative"
+    },
+    {
+      "text": "Hiç bir işe yaramıyor yapısşkanı cabuk açılıyor terletiyor ter de hemen artırıyor",
+      "label": "Negative"
+    },
+    {
+      "text": "Hiç tavsiye etmiyorum verdiğiniz paraya değmez",
+      "label": "Negative"
+    },
+    {
+      "text": "ilk defa denedim gayet güzel ve kullanışlı bı ürün umarım kılları sertlestirmez",
+      "label": "Neutral"
+    },
+    {
+      "text": "ürün  bana bugün  ulaştı  daha kullanmadım  deneyip bakacam  sonra yine yorum yaparız",
+      "label": "Neutral"
+    },
+    {
+      "text": "güzeldiii",
+      "label": "Neutral"
+    },
+    {
+      "text": "Woww diil ama kullanılabilir",
+      "label": "Neutral"
+    },
+    {
+      "text": "Rengi çok çok uçuk öyle canlılık katmıyor ancak pırıltısı güzel. Başka bir allıkla birlikte kullandım.",
+      "label": "Neutral"
+    },
+    {
+      "text": "Çok güzel kokusu var rahatsız etmiyor fotoğraftaki gibi bir ürün",
+      "label": "Positive"
+    },
+    {
+      "text": "uygun fiyatli ancak beklediğimden daha ince . performans acısından tam olarak istediğim gibi olmasa da idare eder.",
+      "label": "Positive"
+    },
+    {
+      "text": "Kokusu şahane. Saçlarım daha parlak ve ipek gibi. Eski sertliğinden eser yok.  Hızlı kargo",
+      "label": "Positive"
+    },
+    {
+      "text": "ürün uygun fiyata",
+      "label": "Positive"
+    },
+    {
+      "text": "muhteşem... anlatılanlar doğru..",
+      "label": "Positive"
+    }
+  ]
+}

@@ -10,7 +10,11 @@ __pycache__/
 data/raw/*
 !data/raw/.gitkeep
 data/processed/
+data/llm_cache/
 models/
+
+# Ham yorum metni içeren rapor tabloları (betikler yeniden üretir; veri setini yeniden dağıtmamak için)
+reports/*.csv
 *.part
 
 # Gizli anahtarlar (ileride LLM API anahtarı burada olacak)

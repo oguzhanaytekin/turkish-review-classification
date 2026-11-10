@@ -71,3 +71,10 @@ araştır ve ekle.
 | **Few-shot** | Az örnekli | Talimatla birlikte birkaç etiketli örnek göstermek |
 | **Prompt** | İstem | LLM'e verilen talimat metni |
 | **McNemar testi** | — | İki modelin aynı örneklerdeki hatalarını karşılaştırıp farkın anlamlı olup olmadığını söyleyen istatistik testi |
+| **API anahtarı** | — | Bir servisi kod içinden kullanmak için kimlik. Şifre gibi saklanır: `.env` dosyasında, git'e girmez |
+| **Rate limit / kota** | Hız sınırı | Dakikada / günde atılabilecek istek sayısı. Aşınca 429 hatası gelir |
+| **Batching** | Toplu gönderim | Birden çok yorumu tek istekte göndermek. Bizde 20 yorum / istek |
+| **Örnekleme (sampling)** | — | Aynı soruyu sıcaklık > 0 ile k kez sormak; cevapların dağılımı modelin kararsızlığını gösterir |
+| **Sözel olasılık (verbalized confidence)** | — | LLM'e "olasılıkları yaz" deyip aldığımız sayılar. Modelin gerçek iç olasılığı değil, söylediği bir şey |
+| **Logprobs** | Log-olasılıklar | Modelin ürettiği token'lara verdiği gerçek olasılıkların logaritması; her API sunmaz |
+| **Contamination** | Kirlenme | Değerlendirilen modelin test verisini ya da kuralını önceden görmüş olması. Sızıntının LLM'deki karşılığı |

@@ -164,3 +164,49 @@ ne zaman ve neden değişti?" sorusunun cevabı.
 | `docs/SOZLUK.md` | **Yeni.** Projede geçen ~45 terim: İngilizce terim, Türkçe açıklama ve bu projedeki karşılığı. Yeni terim çıktıkça güncellenecek |
 | `README.md` | Sözlüğe bağlantı eklendi |
 
+---
+
+## 2026-11-06 — T-05: LLM ile sınıflandırma
+
+### Eklenen dosyalar
+| Dosya | Ne işe yarıyor |
+|---|---|
+| `src/llm.py` | `build_prompt` (zero/few-shot istem), `pick_few_shot` (train'den örnek), `parse_response` (JSON cevabı doğrular), `aggregate` (k örneklemeyi tek tahmin + iki tür olasılığa çevirir). Ağ gerektirmez |
+| `scripts/05_llm.py` | `GeminiCaller` (hız sınırı, 429 bekleme, günlük kotada durma), `FakeCaller` (`--dry-run`), `run_job` (önbellekli, kaldığı yerden devam eden çalıştırma), `--pilot`, tam koşu ve rapor |
+| `tests/test_llm.py` | 9 test: istemde kural sızmıyor, few-shot yalnızca train'den, bozuk cevaplar reddediliyor, çoğunluk ve düzeltme doğru |
+| `requirements-llm.txt` | `google-genai` |
+| `docs/05_llm.md` | T-05 kararları ve alternatifler |
+
+### Değişen dosyalar
+| Dosya | Değişiklik |
+|---|---|
+| `.gitignore` | **+ `data/llm_cache/`**: Ham LLM cevapları (yeniden üretmek kota harcar ama repoya girmesi gereksiz) |
+| `README.md`, `docs/SOZLUK.md` | 05 komutları; T-05 terimleri |
+
+### Önemli uygulama ayrıntıları
+- **API anahtarı** `.env` dosyasından okunuyor (`utf-8-sig` ile, başta BOM varsa sorun çıkmasın). `.env` git'e girmiyor;
+  uzaktan araçların `.env`'e yazması da engelli, bu yüzden dosyayı kullanıcı oluşturdu.
+- **Önbellek anahtarı** `örnekleme:grup` biçiminde; dosya adı model, bölüm, istem türü ve batch boyutunu içeriyor.
+  Batch boyutu ya da model değişirse ayrı önbellek oluşur, eski cevaplarla karışmaz.
+- **Her örneklemede farklı sıra:** `random_state=1000+s`. Aynı yorum her seferinde farklı komşularla gidiyor;
+  böylece toplu gönderimin "komşu etkisi" örneklemeler arasında ortalanıyor.
+- **Yerel test:** API olmadan `--dry-run` ile pilot ve tam koşu uçtan uca denendi; ikinci çalıştırmada
+  0 istek atıldığı (önbellekten devam) doğrulandı. Gerçek API'nin ilk testi pilot.
+
+### Pilot sırasında değişen (2026-11-06)
+- `scripts/05_llm.py`: Varsayılan model `gemini-2.5-flash-lite` → **`gemini-3.5-flash-lite`** (eski model yeni kullanıcılara
+  kapalı, API 404 döndü). Maliyet tahmini fiyatları 3.5 flash-lite'a göre güncellendi ($0,30 / $2,50). Pilot, seçili model
+  listede yoksa artık hiç istek atmadan duruyor.
+- `scripts/05_llm.py`: **+ `--ara-rapor`** seçeneği ve `interim_report` fonksiyonu. API'ye gitmeden önbellekteki cevaplardan,
+  tamamlanan işlerin sonuçlarını ve yarım kalanların ilerlemesini raporluyor (`reports/t05_ara_rapor.md`).
+  Önbellek okuma mantığı `run_job`'un sonundan **`read_cache`** fonksiyonuna taşındı; artık iki yer de onu kullanıyor.
+
+### Üçüncü istem: "kural" (2026-11-07)
+- `src/llm.py`: **+ `MODES = ("zero", "few", "kural")`** ve **+ `RULE`** (etiketleme kuralının yazılı tarifi).
+  `build_prompt`'a `rule` parametresi eklendi. zero ve few istemleri **birebir aynı kaldı**, bu yüzden önbellekteki
+  cevaplar geçerliliğini koruyor.
+- `scripts/05_llm.py`: Tüm döngüler `MODES` üzerinden. İş sırası: test (zero, few, kural), sonra zor örnekler (zero, few, kural);
+  kuralın test sonucu erken görülsün diye. Rapor ve ara rapor üç istemi yan yana gösteriyor.
+- `tests/test_llm.py`: + 1 test (kural metni yalnızca kural isteminde var).
+- Neden: Ara sonuçta few-shot fark yaratmadı; rastgele örnekler çelişkili çıktı (bkz. `docs/05_llm.md`, karar 7).
+

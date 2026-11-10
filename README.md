@@ -1,6 +1,6 @@
 # Türkçe Ürün Yorumu Sınıflandırma: Klasik ML, BERTurk ve LLM
 
-> Durum: geliştirme aşamasında. Tamamlanan: T-01 veri keşfi, T-02 temizlik ve bölme, T-03 baseline. Devam eden: T-04 BERTurk.
+> Durum: geliştirme aşamasında. Tamamlanan: T-01 veri keşfi, T-02 temizlik ve bölme, T-03 baseline, T-04 BERTurk. Devam eden: T-05 LLM.
 > Kod değişikliklerinin geçmişi: `docs/KOD_GUNLUGU.md` · Terimler sözlüğü: `docs/SOZLUK.md`
 
 ## Problem
@@ -43,6 +43,9 @@ python scripts\01_veri_kesfi.py      # veri keşfi, rapor: reports\t01_rapor.md
 python scripts\02_temizlik_bolme.py  # temizlik + bölme, çıktı: data\processed\, rapor: reports\t02_rapor.md
 python scripts\03_baseline.py        # baseline ablation + test, rapor: reports\t03_rapor.md
 # BERTurk (GPU gerekir): notebooks/04_berturk_colab.ipynb dosyasını Colab'da aç
+# LLM (önce .env içine GEMINI_API_KEY, sonra pip install -r requirements-llm.txt):
+python scripts\05_llm.py --pilot
+python scripts\05_llm.py --k 5 --batch 20
 pytest                               # testler
 ```
 
